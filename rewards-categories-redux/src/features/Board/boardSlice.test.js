@@ -2,7 +2,10 @@
 import boardSlice from './boardSlice';
 import initialState from './initialState';
 import initialTestStateRemove from './initialTestRemoveState';
-import { addCategory, removeCategory, moveCategory } from './boardSlice';
+import initialUndoState from './initialUndoState';
+import initialRevertState from './initialReverState';
+import initialUndoRevert from './initialUndoRevert';
+import { addCategory, removeCategory, moveCategory, undoData, redoData } from './boardSlice';
 
 // Add test
 test('Should load correct location for reward on category column', () => {
@@ -19,6 +22,7 @@ test('Should remove a category from a row with removeCategory action', () => {
     expect(actual).toStrictEqual(expected);
 });
 
+// Moving test
 test('Should move a category to a open cell within the buckets action', () => {
     let modedBoard = boardSlice(initialTestStateRemove, moveCategory(
         {
@@ -36,3 +40,18 @@ test('Should move a category to a open cell within the buckets action', () => {
     expect(actualRemoved).toStrictEqual(expectedRemoved);
 });
   
+// Undo button test with state
+test('Should revert state when undo action is passed to boardSlicer', () => {
+    let currentBoard = boardSlice(initialUndoState, undoData());
+
+    let expected = initialUndoRevert;
+    expect(currentBoard.undo).toStrictEqual(expected.rewards);
+
+});
+
+// Redo button test with state
+test('Should forward state when redo is pressed to boardSlicer', () => {
+    let currentBoard = boardSlice(initialUndoState, redoData());
+    let expected = initialRevertState.rewards;
+    expect(currentBoard.undo).toStrictEqual(expected)
+});
