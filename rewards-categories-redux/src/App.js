@@ -1,7 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
 import { selectRewards } from './features/Board/boardSlice';
-import { Counter } from './features/counter/Counter';
 import { Board } from './features/Board/Board';
 import { useSelector, useDispatch } from 'react-redux';
 import { saveData, undoData, redoData } from './features/Board/boardSlice';
@@ -51,7 +49,7 @@ function App() {
             >
               Undo
             </button>
-            <button onClick={() => redoClick()}
+            <button onClick={redoClick}
               className="butt"
             >
               Redo

@@ -23,7 +23,9 @@ export const boardSlice = createSlice({
                             cat.display = false;
                         }
                     }
+
                 }
+                return null;
             });
 
             return state;
@@ -31,10 +33,8 @@ export const boardSlice = createSlice({
         // This adds a new category to the reward when we shift across board
         addCategory: (state, action) => {
             let tempState = state.rewards;
-            
             let tempStateArray = state.undo;
             tempStateArray.push(tempState);
-
             state.undo = tempStateArray;
 
             let {type} = action.payload;
@@ -49,6 +49,7 @@ export const boardSlice = createSlice({
                         }
                     }
                 } 
+                return null;
             });
 
             return state;

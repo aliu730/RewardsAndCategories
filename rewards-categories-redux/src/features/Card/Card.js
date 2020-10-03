@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
-import { selectRewards, removeCategory } from '../Board/boardSlice';
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { removeCategory } from '../Board/boardSlice';
 
 export function Card(props) {
     const dispatch = useDispatch();
@@ -9,10 +9,9 @@ export function Card(props) {
         e.dataTransfer.setData('category', props.category.name);
         e.dataTransfer.setData('data-category-show', props.category.display);
     }
-    
     return (
         <div
-            draggable="true"
+            draggable={props.category.display ? props.category.display : false}
             className="card"
             onDragStart={dragStart}
             data-category={props.category.name}
@@ -23,7 +22,7 @@ export function Card(props) {
             {props.category.display ? 
                 props.type : '_'    }
             {' '}   
-            {props.category.display && props.buttonShow == true ? 
+            {props.category.display && props.buttonShow === true ? 
                 <button 
                     id="card"
                     onClick={
