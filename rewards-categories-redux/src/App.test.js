@@ -14,9 +14,15 @@ test('Renders reward types at initial load', () => {
     </Provider>
   );
   expect(getByText("C1")).toBeInTheDocument();
+  expect(getByText("X")).toBeInTheDocument();
 });
 
-// it ('should render without crashing', () => {
-//   const div = document.createElement("div");
-//   ReactDOM.render(<App />, div);
-// });
+test('Renders reward types in correct location on load', () => {
+  const { getByText } = render(
+    <Provider store={testStore}>
+      <App />
+    </Provider>
+  );
+  //You expect twelve instead of 30 because the mock rows only contains 2 rewards which is 2x 5 + 2 header cards
+  expect(document.getElementsByClassName("card").length).toEqual(12);
+});
