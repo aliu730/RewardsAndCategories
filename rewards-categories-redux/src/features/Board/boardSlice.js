@@ -16,10 +16,10 @@ export const boardSlice = createSlice({
             let {category} = action.payload;
 
             state.rewards.map((reward) => {
-                if (reward.type == type) {
+                if (reward.type === type) {
                     for (let i = 0; i < reward.categories.length; i++) {
                         let cat = reward.categories[i];
-                        if (cat.name == category) {
+                        if (cat.name === category) {
                             cat.display = false;
                         }
                     }
@@ -30,12 +30,10 @@ export const boardSlice = createSlice({
         },
         // This adds a new category to the reward when we shift across board
         addCategory: (state, action) => {
-            let tempState = JSON.parse(JSON.stringify(state.rewards));
+            let tempState = state.rewards;
             
             let tempStateArray = state.undo;
-            // console.log("1",JSON.stringify(tempStateArray));
             tempStateArray.push(tempState);
-            // console.log("2",JSON.stringify(tempStateArray));
 
             state.undo = tempStateArray;
 
@@ -43,34 +41,46 @@ export const boardSlice = createSlice({
             let {category} = action.payload;
             
             state.rewards.map((reward) => {
-                if (reward.type == type) {
+                if (reward.type === type) {
                     for (let i = 0; i < reward.categories.length; i++) {
                         let cat = reward.categories[i];
-                        if (cat.name == category) {
+                        if (cat.name === category) {
                             cat.display = true;
                         }
                     }
                 } 
             });
+
             return state;
         },
         saveData: (state, action) => {
             localStorage.setItem("state", JSON.stringify(state));
         },
         undoData: (state, action) => {
-            let tempRewards = JSON.parse(JSON.stringify(state.rewards));
+            if (state.undo.length > 0) {
+                let tempRewards = JSON.parse(JSON.stringify(state.rewards));
 
-            let currRewards = JSON.parse(JSON.stringify(state.undo.pop()));
-            state.rewards = currRewards;
-            state.redo.push(tempRewards);
+                let currRewards = state.undo.pop();
+                state.rewards = currRewards;
+                state.redo.push(tempRewards);
+            }
+            
             return state;
         },
         redoData: (state, action) => {
+            if (state.redo.length > 0) {
+                let tempRewards = JSON.parse(JSON.stringify(state.rewards));
+
+                let currRewards = state.redo.pop();
+                state.rewards = currRewards;
+                state.undo.push(tempRewards);
+            }
+            return state;
 
         }
     }
 });
-export const { removeCategory, addCategory, saveData, undoData } = boardSlice.actions;
+export const { removeCategory, addCategory, saveData, undoData, redoData } = boardSlice.actions;
 
 export const selectRewards = state => state.board.rewards;
 

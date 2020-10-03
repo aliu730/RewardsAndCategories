@@ -16,9 +16,10 @@ export function Board(props) {
             >
                 {type} 
             </Card>            
-            {categories.map((category) => {
+            {categories.map((category, id) => {
                 return (
                     <Bucket 
+                        key={id}
                         type={type}
                         category={category}>
                     </Bucket>           
