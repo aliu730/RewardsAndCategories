@@ -17,10 +17,8 @@ function App() {
 
   const undoClick = () => {
     dispatch(undoData());
-    dispatch(undoData());
   }
   const redoClick = () => {
-    dispatch(redoData());
     dispatch(redoData());
   }
   const headerCategory = ["X", "C1", "C2", "C3", "C4", "C5"];

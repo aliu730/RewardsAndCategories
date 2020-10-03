@@ -32,10 +32,8 @@ export const boardSlice = createSlice({
         },
         // This adds a new category to the reward when we shift across board
         addCategory: (state, action) => {
-            let tempState = state.rewards;
-            let tempStateArray = state.undo;
-            tempStateArray.push(tempState);
-            state.undo = tempStateArray;
+            let tempState = JSON.parse(JSON.stringify(state.rewards));
+            state.undo.push(tempState);
 
             let {type} = action.payload;
             let {category} = action.payload;
@@ -53,6 +51,25 @@ export const boardSlice = createSlice({
             });
 
             return state;
+        },
+        moveCategory: (state, action) => {
+            let tempState = JSON.parse(JSON.stringify(state.rewards));
+            state.undo.push(tempState);
+
+            let {rewardType, rewardCategory, newCategory} = action.payload;
+            state.rewards.map((reward) => {
+                if (reward.type === rewardType) {
+                    for (let i = 0; i < reward.categories.length; i++) {
+                        let cat = reward.categories[i];
+                        if (cat.name === newCategory) {
+                            cat.display = true;
+                        }
+                        if (cat.name === rewardCategory) {
+                            cat.display = false;
+                        }
+                    }
+                }
+            });
         },
         saveData: (state, action) => {
             localStorage.setItem("state", JSON.stringify(state));
@@ -81,7 +98,7 @@ export const boardSlice = createSlice({
         }
     }
 });
-export const { removeCategory, addCategory, saveData, undoData, redoData } = boardSlice.actions;
+export const { removeCategory, addCategory, saveData, undoData, redoData, moveCategory } = boardSlice.actions;
 
 export const selectRewards = state => state.board.rewards;
 

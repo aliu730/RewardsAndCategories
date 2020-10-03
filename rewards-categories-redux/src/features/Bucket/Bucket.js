@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { Card } from '../Card/Card';
-import { addCategory, removeCategory } from '../Board/boardSlice';
+import { addCategory, removeCategory, moveCategory } from '../Board/boardSlice';
 
 
 export function Bucket(props) {
@@ -13,14 +13,20 @@ export function Bucket(props) {
         e.preventDefault();
         let rewardType = e.dataTransfer.getData('type');
         let rewardCategory = e.dataTransfer.getData('category');
+
         let newCategory = e.target.getAttribute('data-category');
         let newType = e.target.getAttribute('data-type');
-        let alreadyExist = e.target.getAttribute('data-category-show');
-        if (rewardType === newType) {
-            dispatch(removeCategory({type: rewardType, category: rewardCategory}));
-            if (alreadyExist) {
-                dispatch(addCategory({type: rewardType, category: newCategory}));
-            }
+
+        let alreadyExist = ('true' == e.target.getAttribute('data-category-show'));
+        if (rewardType === newType && !alreadyExist) {
+            // if matching R types -> and new cell is empty -> move it over
+            dispatch(moveCategory(
+                {
+                    rewardType: rewardType,
+                    rewardCategory: rewardCategory,
+                    newCategory: newCategory,
+                }
+            ));
         }
     }
 

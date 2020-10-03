@@ -1,4 +1,5 @@
 import React from 'react';
+import ReactDOM from 'react-dom';
 import { render } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import store from './app/store';
@@ -8,17 +9,14 @@ import App from './App';
 
 test('Renders reward types at initial load', () => {
   const { getByText } = render(
-    <Provider store={testStore}>
+    <Provider store={store}>
       <App />
     </Provider>
   );
-  expect(getByText("R1")).toBeInTheDocument();
+  expect(getByText("C1")).toBeInTheDocument();
 });
 
-test('The x button removes rendered Categories', () => {
-  const { getByText } = render(
-    <Provider store={testStore}>
-      <App />
-    </Provider>
-  );
-});
+// it ('should render without crashing', () => {
+//   const div = document.createElement("div");
+//   ReactDOM.render(<App />, div);
+// });

@@ -7,13 +7,16 @@ export function Card(props) {
     const dragStart = e => {
         e.dataTransfer.setData('type', props.type);
         e.dataTransfer.setData('category', props.category.name);
-        e.dataTransfer.setData('data-category-show', props.category.display);
+    }
+    const dragEnd = e => {
+        e.stopPropagation();
     }
     return (
         <div
             draggable={props.category.display ? props.category.display : false}
             className="card"
             onDragStart={dragStart}
+            onDragEnd={dragEnd}
             data-category={props.category.name}
             data-type={props.type}
             data-category-show={props.category.display}
